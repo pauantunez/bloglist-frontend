@@ -2,13 +2,14 @@ import { useState, useEffect } from "react";
 import Blog from "./components/Blog";
 import blogService from "./services/blogs";
 import loginService from "./services/login";
+import Notification from "./components/Notification"; // Import the Notification component
 
 const App = () => {
   const [blogs, setBlogs] = useState([]);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [user, setUser] = useState(null);
-  const [errorMessage, setErrorMessage] = useState(null);
+  const [notification, setNotification] = useState({ message: null, type: null });
   const [newBlog, setNewBlog] = useState({
     title: "",
     author: "",
@@ -41,10 +42,14 @@ const App = () => {
       setUser(user);
       setUsername("");
       setPassword("");
-    } catch (exception) {
-      setErrorMessage("wrong credentials");
+      setNotification({ message: `Welcome ${user.name}!`, type: "success" });
       setTimeout(() => {
-        setErrorMessage(null);
+        setNotification({ message: null, type: null });
+      }, 5000);
+    } catch (exception) {
+      setNotification({ message: "Wrong credentials", type: "error" });
+      setTimeout(() => {
+        setNotification({ message: null, type: null });
       }, 5000);
     }
   };
@@ -53,20 +58,27 @@ const App = () => {
     window.localStorage.removeItem("loggedBlogappUser");
     setUser(null);
     blogService.setToken(null);
+    setNotification({ message: "Logged out successfully", type: "success" });
+    setTimeout(() => {
+      setNotification({ message: null, type: null });
+    }, 5000);
   };
 
   const handleBlogCreation = async (event) => {
     event.preventDefault();
-
     try {
       blogService.create(newBlog).then((returnedBlog) => {
         setBlogs(blogs.concat(returnedBlog));
         setNewBlog({ title: "", author: "", url: "" });
+        setNotification({ message: `A new blog ${returnedBlog.title} by ${returnedBlog.author} added`, type: "success" });
+        setTimeout(() => {
+          setNotification({ message: null, type: null });
+        }, 5000);
       });
     } catch (exception) {
-      setErrorMessage("Error creating blog");
+      setNotification({ message: "Error creating blog", type: "error" });
       setTimeout(() => {
-        setErrorMessage(null);
+        setNotification({ message: null, type: null });
       }, 5000);
     }
   };
@@ -82,7 +94,6 @@ const App = () => {
   const loginForm = () => (
     <div>
       <h2>log in to application</h2>
-      {errorMessage && <div style={{ color: "red" }}>{errorMessage}</div>}
       <form onSubmit={handleLogin}>
         <div>
           username
@@ -131,7 +142,12 @@ const App = () => {
     </div>
   );
 
-  return <div>{!user ? loginForm() : blogList()}</div>;
+  return (
+    <div>
+      <Notification message={notification.message} type={notification.type} />
+      {!user ? loginForm() : blogList()}
+    </div>
+  );
 };
 
 export default App;
