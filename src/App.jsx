@@ -25,7 +25,10 @@ const App = () => {
   }, []);
 
   useEffect(() => {
-    blogService.getAll().then((blogs) => setBlogs(blogs));
+    blogService.getAll().then((blogs) => {
+      blogs.sort((a, b) => b.likes - a.likes);
+      setBlogs(blogs);
+    });
   }, []);
 
   const handleLogin = async (event) => {
@@ -99,6 +102,7 @@ const App = () => {
 
   const updateBlogs = (updatedBlog) => {
     const updatedBlogs = blogs.map((blog) => (blog.id === updatedBlog.id ? updatedBlog : blog));
+    updatedBlogs.sort((a, b) => b.likes - a.likes);
     setBlogs(updatedBlogs);
   };
 
