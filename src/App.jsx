@@ -101,9 +101,18 @@ const App = () => {
   );
 
   const updateBlogs = (updatedBlog) => {
+    /* console.log("🚀 ~ updateBlogs ~ updatedBlog:", updatedBlog); */
     const updatedBlogs = blogs.map((blog) => (blog.id === updatedBlog.id ? updatedBlog : blog));
     updatedBlogs.sort((a, b) => b.likes - a.likes);
     setBlogs(updatedBlogs);
+  };
+
+  const removeBlog = (id) => {
+    setBlogs(blogs.filter((blog) => blog.id !== id));
+    setNotification({ message: "Blog removed successfully", type: "success" });
+    setTimeout(() => {
+      setNotification({ message: null, type: null });
+    }, 5000);
   };
 
   const blogList = () => (
@@ -116,7 +125,7 @@ const App = () => {
         <BlogForm createBlog={createBlog} />
       </Togglable>
       {blogs.map((blog) => (
-        <Blog key={blog.id} blog={blog} updateBlogs={updateBlogs} />
+        <Blog key={blog.id} blog={blog} updateBlogs={updateBlogs} removeBlog={removeBlog} user={user} />
       ))}
     </div>
   );
