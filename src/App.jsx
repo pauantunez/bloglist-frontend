@@ -101,7 +101,6 @@ const App = () => {
   );
 
   const updateBlogs = (updatedBlog) => {
-    /* console.log("🚀 ~ updateBlogs ~ updatedBlog:", updatedBlog); */
     const updatedBlogs = blogs.map((blog) => (blog.id === updatedBlog.id ? updatedBlog : blog));
     updatedBlogs.sort((a, b) => b.likes - a.likes);
     setBlogs(updatedBlogs);

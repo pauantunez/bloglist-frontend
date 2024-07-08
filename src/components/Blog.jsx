@@ -24,7 +24,6 @@ const Blog = ({ blog, updateBlogs, removeBlog, user }) => {
 
     try {
       const returnedBlog = await blogService.update(blog.id, updatedBlog);
-      console.log("🚀 ~ handleLike ~ returnedBlog:", returnedBlog);
       updateBlogs(returnedBlog);
     } catch (error) {
       console.error("Error updating blog:", error.message);
