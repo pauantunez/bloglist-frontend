@@ -112,7 +112,6 @@ const App = () => {
       ...blog,
       likes: blog.likes + 1,
     });
-
     updateBlogs(updatedBlog);
   };
 
