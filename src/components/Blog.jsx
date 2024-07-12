@@ -44,15 +44,16 @@ const Blog = ({ blog, updateBlogs, removeBlog, user }) => {
   return (
     <div style={blogStyle}>
       <div>
-        <strong>{blog.title}</strong> by {blog.author} <button onClick={handleToggleDetails}>{showDetails ? "hide" : "view"}</button>
+        <strong className="blog-title">{blog.title}</strong> by <span className="blog-author">{blog.author}</span>
+        <button onClick={handleToggleDetails}>{showDetails ? "hide" : "view"}</button>
       </div>
       {showDetails && (
         <div>
-          <p>{blog.url}</p>
-          <p>
+          <p className="blog-url">{blog.url}</p>
+          <p className="blog-likes">
             likes {blog.likes} <button onClick={handleLike}>like</button>
           </p>
-          <p>added by {blog.user.username}</p>
+          <p className="blog-user">added by {blog.user.username}</p>
           {blog.user.username === user.username && <button onClick={handleRemove}>remove</button>}
         </div>
       )}
