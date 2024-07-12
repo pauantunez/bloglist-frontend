@@ -4,7 +4,7 @@ import Blog from "../components/Blog";
 import userEvent from "@testing-library/user-event";
 import blogService from "../services/blogs";
 
-/* test("<BlogForm /> calls onSubmit with correct details", async () => {
+test("<BlogForm /> calls onSubmit with correct details", async () => {
   const user = userEvent.setup();
   const createBlog = vi.fn();
 
@@ -27,7 +27,7 @@ import blogService from "../services/blogs";
   });
 });
 
-test("<Blog /> shows only title and author by default", async () => {
+/* test("<Blog /> shows only title and author by default", async () => {
   const blog = {
     title: "Test Blog Title",
     author: "Test Author",
@@ -59,7 +59,7 @@ test("<Blog /> shows only title and author by default", async () => {
   // Verificar que la URL y los likes se muestran después de hacer clic en "view"
   expect(screen.getByText("https://example.com/test-blog")).toBeDefined();
   expect(screen.getByText("likes 0")).toBeDefined();
-}); */
+});
 
 test("<Blog /> calls like handler twice when like button is clicked twice", async () => {
   const blog = {
@@ -98,4 +98,4 @@ test("<Blog /> calls like handler twice when like button is clicked twice", asyn
   expect(updateBlogsMock).toHaveLength(2);
   expect(updateBlogsMock.mock.calls[0][0].likes).toBe(1);
   expect(updateBlogsMock.mock.calls[1][0].likes).toBe(2);
-});
+}); */

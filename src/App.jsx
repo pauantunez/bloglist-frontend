@@ -106,6 +106,16 @@ const App = () => {
     setBlogs(updatedBlogs);
   };
 
+  const handleVote = async (blog) => {
+    console.log("updating", blog);
+    const updatedBlog = await blogService.update(blog.id, {
+      ...blog,
+      likes: blog.likes + 1,
+    });
+
+    updateBlogs(updatedBlog);
+  };
+
   const removeBlog = (id) => {
     setBlogs(blogs.filter((blog) => blog.id !== id));
     setNotification({ message: "Blog removed successfully", type: "success" });
@@ -124,7 +134,7 @@ const App = () => {
         <BlogForm createBlog={createBlog} />
       </Togglable>
       {blogs.map((blog) => (
-        <Blog key={blog.id} blog={blog} updateBlogs={updateBlogs} removeBlog={removeBlog} user={user} />
+        <Blog key={blog.id} blog={blog} handleVote={handleVote} removeBlog={removeBlog} user={user} />
       ))}
     </div>
   );

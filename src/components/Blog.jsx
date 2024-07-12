@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import blogService from "../services/blogs";
 
-const Blog = ({ blog, updateBlogs, removeBlog, user }) => {
+const Blog = ({ blog, handleVote, removeBlog, user }) => {
   const [showDetails, setShowDetails] = useState(false);
 
   const blogStyle = {
@@ -16,7 +16,7 @@ const Blog = ({ blog, updateBlogs, removeBlog, user }) => {
     setShowDetails(!showDetails);
   };
 
-  const handleLike = async () => {
+  /* const handleLike = async () => {
     const updatedBlog = {
       ...blog,
       likes: blog.likes + 1,
@@ -28,7 +28,7 @@ const Blog = ({ blog, updateBlogs, removeBlog, user }) => {
     } catch (error) {
       console.error("Error updating blog:", error.message);
     }
-  };
+  }; */
 
   const handleRemove = async () => {
     if (window.confirm(`Remove blog ${blog.title} by ${blog.author}?`)) {
@@ -51,7 +51,7 @@ const Blog = ({ blog, updateBlogs, removeBlog, user }) => {
         <div>
           <p className="blog-url">{blog.url}</p>
           <p className="blog-likes">
-            likes {blog.likes} <button onClick={handleLike}>like</button>
+            likes {blog.likes} <button onClick={handleVote}>like</button>
           </p>
           <p className="blog-user">added by {blog.user.username}</p>
           {blog.user.username === user.username && <button onClick={handleRemove}>remove</button>}
