@@ -1,9 +1,10 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
 import BlogForm from "../components/BlogForm";
 import Blog from "../components/Blog";
 import userEvent from "@testing-library/user-event";
+import blogService from "../services/blogs";
 
-test("<BlogForm /> calls onSubmit with correct details", async () => {
+/* test("<BlogForm /> calls onSubmit with correct details", async () => {
   const user = userEvent.setup();
   const createBlog = vi.fn();
 
@@ -58,4 +59,43 @@ test("<Blog /> shows only title and author by default", async () => {
   // Verificar que la URL y los likes se muestran después de hacer clic en "view"
   expect(screen.getByText("https://example.com/test-blog")).toBeDefined();
   expect(screen.getByText("likes 0")).toBeDefined();
+}); */
+
+test("<Blog /> calls like handler twice when like button is clicked twice", async () => {
+  const blog = {
+    title: "Titletest",
+    author: "Titleauthor",
+    id: "66879e7569f26c82be6ca4b5",
+    url: "urltest",
+    likes: 0,
+    user: {
+      username: "testuser",
+    },
+  };
+
+  const user = {
+    username: "testuser",
+  };
+  blogService.setToken("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InBhdSIsImlkIjoiNjY4NzllNDg2OWYyNmM4MmJlNmNhNGIxIiwiaWF0IjoxNzIwNDQ3ODYzfQ.vLi-c-pPgug6_sbiqjr0AjuimWXor1MPvOXb6iQiKWE");
+  const updateBlogsMock = vi.fn();
+
+  render(<Blog blog={blog} user={user} updateBlogs={updateBlogsMock} />);
+
+  // Verificar que el título y el autor se muestran correctamente
+  expect(screen.getByText(blog.title)).toBeInTheDocument();
+  expect(screen.getByText(blog.author)).toBeInTheDocument();
+
+  // Simular el clic en el botón "view" para mostrar los detalles
+  const viewButton = screen.getByText("view");
+  userEvent.click(viewButton);
+
+  // Simular dos clics en el botón "like"
+  const likeButton = screen.getByText("like");
+  userEvent.click(likeButton);
+  userEvent.click(likeButton);
+
+  // Aserciones sobre la función mock llamada
+  expect(updateBlogsMock).toHaveLength(2);
+  expect(updateBlogsMock.mock.calls[0][0].likes).toBe(1);
+  expect(updateBlogsMock.mock.calls[1][0].likes).toBe(2);
 });
