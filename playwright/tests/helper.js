@@ -10,6 +10,13 @@ const createUser = async (request) => {
       password: "test",
     },
   });
+  await request.post("http://localhost:3003/api/users", {
+    data: {
+      name: "test",
+      username: "test",
+      password: "test",
+    },
+  });
 };
 
 const login = async (page, username, password) => {

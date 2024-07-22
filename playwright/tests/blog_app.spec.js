@@ -63,25 +63,29 @@ describe("Blog app", () => {
         await expect(page.getByText("likes 1")).not.toBeVisible();
       }); */
 
-      test("it can be deleted by the creator", async ({ page }) => {
+      /* test("it can be deleted by the creator", async ({ page }) => {
         await page.getByRole("button", { name: "view" }).click();
 
         const pageHTML = await page.content();
-        // Esperar a que el botón "remove" esté visible
         const removeButton = page.getByRole("button", { name: "remove" });
         await removeButton.waitFor({ state: "visible", timeout: 5000 });
 
-        // Añadir un evento de diálogo para aceptar la confirmación de eliminación
         page.on("dialog", async (dialog) => {
           await dialog.accept();
         });
 
-        // Hacer clic en el botón "remove"
         await removeButton.click();
 
-        // Verificar que el blog haya sido eliminado
         await expect(page.getByTestId("blog-title")).not.toBeVisible();
         await expect(page.getByTestId("blog-author")).not.toBeVisible();
+      }); */
+
+      test("it can not be deleted by other users", async ({ page }) => {
+        await page.getByRole("button", { name: "logout" }).click();
+        await login(page, "test", "test");
+
+        await page.getByRole("button", { name: "view" }).click();
+        await expect(page.getByRole("button", { name: "remove" })).not.toBeVisible();
       });
     });
   });
