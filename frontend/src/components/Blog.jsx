@@ -42,23 +42,23 @@ const Blog = ({ blog, handleVote, removeBlog, user }) => {
   };
 
   return (
-    <div style={blogStyle}>
-      <div>
-        <strong className="blog-title" data-testid="blog-title">
-          {blog.title}
-        </strong>{" "}
-        by{" "}
-        <span className="blog-author" data-testid="blog-author">
-          {blog.author}
-        </span>
-        <button onClick={handleToggleDetails}>{showDetails ? "hide" : "view"}</button>
-      </div>
+    <div style={blogStyle} className="blog">
+      <strong className="blog-title" data-testid="blog-title">
+        {blog.title}
+      </strong>{" "}
+      by{" "}
+      <span className="blog-author" data-testid="blog-author">
+        {blog.author}
+      </span>
+      <button data-testid={`toggle-details-${blog.title}`} onClick={handleToggleDetails}>
+        {showDetails ? "hide" : "view"}
+      </button>
       {showDetails && (
         <div>
           <p className="blog-url" data-testid="blog-url">
             {blog.url}
           </p>
-          <p className="blog-likes" data-testid="blog-likes">
+          <p className="blog-likes" data-testid={`blog-likes-${blog.title}`}>
             likes {blog.likes} <button onClick={() => handleVote(blog)}>like</button>
           </p>
           <p className="blog-user" data-testid="blog-user">

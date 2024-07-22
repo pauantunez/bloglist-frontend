@@ -36,4 +36,11 @@ const createBlog = async (page, title, author, url) => {
   await page.waitForSelector(`.blog-author:text("${author}")`);
 };
 
-export { resetDatabase, createUser, login, createBlog };
+const likeTimes = async (page, button, n) => {
+  for (let i = 0; i < n; i++) {
+    await button.click();
+    await page.getByText(`likes ${i + 1}`).waitFor();
+  }
+};
+
+export { resetDatabase, createUser, login, createBlog, likeTimes };
