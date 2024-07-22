@@ -18,4 +18,15 @@ const login = async (page, username, password) => {
   await page.getByRole("button", { name: "Login" }).click();
 };
 
-export { resetDatabase, createUser, login };
+const createBlog = async (page, title, author, url) => {
+  await page.getByRole("button", { name: "new blog" }).click();
+  await page.getByTestId("title-input").fill(title);
+  await page.getByTestId("author-input").fill(author);
+  await page.getByTestId("url-input").fill(url);
+  await page.getByRole("button", { name: "Create" }).click();
+
+  await page.waitForSelector(`.blog-title:text("${title}")`);
+  await page.waitForSelector(`.blog-author:text("${author}")`);
+};
+
+export { resetDatabase, createUser, login, createBlog };
