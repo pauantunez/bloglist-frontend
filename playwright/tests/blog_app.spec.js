@@ -1,11 +1,11 @@
 const { test, expect, beforeEach, describe } = require("@playwright/test");
-const { resetDatabase, createUser } = require("./helper");
+const { resetDatabase, createUser, login } = require("./helper");
 
 describe("Blog app", () => {
   beforeEach(async ({ page, request }) => {
     await resetDatabase(request);
     await createUser(request);
-    await page.goto("http://localhost:5174");
+    await page.goto("http://localhost:5173");
   });
 
   test("Login form is shown", async ({ page }) => {
@@ -29,6 +29,27 @@ describe("Blog app", () => {
 
       await expect(page.getByText("Wrong credentials")).toBeVisible();
       await expect(page.getByText("Pau logged in")).not.toBeVisible();
+    });
+  });
+
+  describe("When logged in", () => {
+    beforeEach(async ({ page }) => {
+      await login(page, "pau", "test");
+    });
+
+    test("a new blog can be created", async ({ page }) => {
+      await page.getByRole("button", { name: "new blog" }).click();
+
+      await page.getByTestId("title-input").fill("Test ");
+      await page.getByTestId("author-input").fill("test1");
+      await page.getByTestId("url-input").fill("http//:example.com");
+      await page.getByRole("button", { name: "Create" }).click();
+
+      const blogTitle = page.getByTestId("blog-title");
+      const blogAuthor = page.getByTestId("blog-author");
+
+      await expect(blogTitle).toHaveText("Test");
+      await expect(blogAuthor).toHaveText("test1");
     });
   });
 });
